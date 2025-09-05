@@ -1,6 +1,6 @@
 // src/contexts/ToastContext.tsx
 import { createContext, useContext, useState, useEffect, useRef } from 'react';
-import { ref, push, set, onValue, off } from 'firebase/database';
+import { ref, push, set, off } from 'firebase/database';
 import { db } from '../firebase';
 import type { ReactNode } from 'react';
 import type { GameState } from '../types/game';

@@ -1,15 +1,30 @@
 // src/App.tsx
-// Main application component
-
 import React from "react";
-import GameController from "./controllers/GameController";
 import Layout from "./components/Layout";
+import GameView from "./components/GameView";
+import { ToastProvider } from "./contexts/ToastContext";
+import { GameProvider, useGame } from "./contexts/GameContext";
+import ToastDisplay from "./components/ToastDisplay";
+
+// Inner component that has access to GameContext
+const AppContent: React.FC = () => {
+  const { gameState } = useGame();
+  
+  return (
+    <ToastProvider gameState={gameState}>
+      <Layout>
+        <GameView />
+      </Layout>
+      <ToastDisplay currentPlayer={gameState.currentPlayer} />
+    </ToastProvider>
+  );
+};
 
 const App: React.FC = () => {
   return (
-    <Layout>
-      <GameController />
-    </Layout>
+    <GameProvider>
+      <AppContent />
+    </GameProvider>
   );
 };
 

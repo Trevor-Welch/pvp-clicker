@@ -128,6 +128,7 @@ export const ToastProvider = ({ children, gameState }: ToastProviderProps) => {
 
     const toastsRef = ref(db, `rooms/${roomId}/toasts`);
     
+    /*
     const unsubscribe = onValue(toastsRef, (snapshot) => {
       const firebaseToasts = snapshot.val();
       if (!firebaseToasts) return;
@@ -162,6 +163,8 @@ export const ToastProvider = ({ children, gameState }: ToastProviderProps) => {
         }
       });
     });
+    */
+
 
     // Cleanup function
     return () => {

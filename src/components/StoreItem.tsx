@@ -22,7 +22,6 @@ interface StoreItemProps {
 
 const StoreItem: React.FC<StoreItemProps> = ({
   item,
-  playerClicks,
   canAfford,
   ownedCount,
 }) => {

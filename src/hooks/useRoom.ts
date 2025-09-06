@@ -15,14 +15,14 @@ export const useRoom = ({ gameState, setGameState }: UseRoomProps) => {
   const createRoom = useCallback((roomId: string) => {
     setGameState({
       roomId,
-      p1: { id: "p1", clicks: 0, passiveIncome: 0, items: {} },
-      p2: { id: "p2", clicks: 0, passiveIncome: 0, items: {} },
+      p1: { id: "p1", clicks: 0, passiveIncome: 0, items: {}, effects: {} },
+      p2: { id: "p2", clicks: 0, passiveIncome: 0, items: {}, effects: {} },
       currentPlayer: "p1",
     });
     const roomRef = ref(db, `rooms/${roomId}`);
     runTransaction(roomRef, () => ({ 
-      p1: { clicks: 0, passiveIncome: 0 },
-      p2: { clicks: 0, passiveIncome: 0 },
+      p1: { clicks: 0, passiveIncome: 0, items: {}, effects: {} },
+      p2: { clicks: 0, passiveIncome: 0, items: {}, effects: {} },
     }));
     subscribeToRoom(roomId);
   }, [setGameState]);
@@ -41,12 +41,14 @@ export const useRoom = ({ gameState, setGameState }: UseRoomProps) => {
           clicks: value.p1?.clicks ?? 0,
           passiveIncome: value.p1?.passiveIncome ?? 0,
           items: {},
+          effects: {}
         },
         p2: {
           id: "p2",
           clicks: value.p2?.clicks ?? 0,
           passiveIncome: value.p2?.passiveIncome ?? 0,
           items: {},
+          effects: {}
         },
       });
     }, { onlyOnce: true });

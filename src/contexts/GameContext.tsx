@@ -1,5 +1,5 @@
 // src/contexts/GameContext.tsx
-import { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
+import { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { db } from '../firebase';
 import { ref, runTransaction, onValue } from 'firebase/database';
 import type { ReactNode } from 'react';

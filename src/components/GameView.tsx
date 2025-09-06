@@ -7,7 +7,7 @@ import { useGame } from "../contexts/GameContext";
 import Store from "./Store";
 
 const GameView: React.FC = () => {
-  const { gameState, handleClick } = useGame();
+  const { gameState,  } = useGame();
 
   // Render room selector if no room joined
   if (!gameState.roomId) {
@@ -26,7 +26,6 @@ const GameView: React.FC = () => {
         {gameState.p1 && (
           <CookieCounter
             clicks={gameState.p1.clicks}
-            onClick={gameState.currentPlayer === "p1" ? handleClick : () => {}}
             playerId="p1"
             isActivePlayer={gameState.currentPlayer === "p1"}
             passiveIncome={gameState.p1.passiveIncome}
@@ -35,7 +34,6 @@ const GameView: React.FC = () => {
         {gameState.p2 && (
           <CookieCounter
             clicks={gameState.p2.clicks}
-            onClick={gameState.currentPlayer === "p2" ? handleClick : () => {}}
             playerId="p2"
             isActivePlayer={gameState.currentPlayer === "p2"}
             passiveIncome={gameState.p2.passiveIncome}

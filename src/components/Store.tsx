@@ -2,32 +2,17 @@
 import React from 'react';
 import StoreItem from './StoreItem';
 import { useGame } from '../contexts/GameContext';
+import { STORE_ITEMS } from '../data/storeItems';
 import "../styles/Store.css"
 
-interface StoreItemData {
-  id: string;
-  name: string;
-  description: string;
-  cost: number;
-  passiveIncomeBonus: number;
-  icon?: string;
-}
-
-const STORE_ITEMS: StoreItemData[] = [
-  {
-    id: 'extra_mouse',
-    name: 'Extra Mouse',
-    description: 'Adds +1 passive income per second',
-    cost: 20,
-    passiveIncomeBonus: 1,
-    icon: '🖱️'
-  },
-  // Add more items here as you expand the store
-];
-
 const Store: React.FC = () => {
-  const { gameState } = useGame();
+  const { gameState, pendingClicks } = useGame();
   const currentPlayerData = gameState.currentPlayer ? gameState[gameState.currentPlayer] : null;
+
+  const canAfford = (cost: number) => {
+    if (!currentPlayerData) return false;
+    return currentPlayerData.clicks + pendingClicks >= cost;
+  }
   
   if (!currentPlayerData) {
     return (
@@ -48,9 +33,9 @@ const Store: React.FC = () => {
             <StoreItem
               key={item.id}
               item={item}
-              playerClicks={currentPlayerData.clicks}
-              canAfford={currentPlayerData.clicks >= item.cost}
+              canAfford={canAfford(item.cost)}
               ownedCount={ownedCount}
+              currentPlayer={gameState.currentPlayer!}
             />
           );
         })}

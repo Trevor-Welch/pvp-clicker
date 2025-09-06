@@ -40,19 +40,16 @@ export const ToastProvider = ({ children, gameState }: ToastProviderProps) => {
     if (existingTimer) {
       clearTimeout(existingTimer);
     }
-
     // Set new timer
     const timer = setTimeout(() => {
       hideToast(id);
       activeTimers.current.delete(id);
     }, duration);
-
     activeTimers.current.set(id, timer);
   };
 
   // Local toast - only shows on current player's screen
   const showToast = (message: string, target: "all" | "p1" | "p2", duration = 3000) => {
-    console.log("Showing local toast:", { message, target, duration });
     const id = `toast-${Date.now()}-${Math.random()}`;
     const newToast: ToastMessage = {
       id,
@@ -61,7 +58,8 @@ export const ToastProvider = ({ children, gameState }: ToastProviderProps) => {
       timestamp: Date.now(),
     };
     setToasts(prev => [...prev, newToast]);
-    console.log("Local toasts after showToast:", [...toasts, newToast]);
+    //console.log("Local toasts after showToast:", [...toasts, newToast]);
+    
     // Set timer for auto-hide
     setToastTimer(id, duration);
   };
@@ -69,7 +67,6 @@ export const ToastProvider = ({ children, gameState }: ToastProviderProps) => {
   // Shared toast - pushes to Firebase so both players see it
   const pushToast = (message: string, target: "all" | "p1" | "p2", duration = 3000, overrideRoomId?: string) => {
     const targetRoomId = overrideRoomId || roomId;
-    console.log("Pushing toast:", { message, target, duration, roomId: targetRoomId });
     
     if (!targetRoomId) {
       console.warn('Cannot push toast: no room connected');
@@ -125,46 +122,7 @@ export const ToastProvider = ({ children, gameState }: ToastProviderProps) => {
     if (!roomId || !currentPlayer) {
       return;
     }
-
     const toastsRef = ref(db, `rooms/${roomId}/toasts`);
-    
-    /*
-    const unsubscribe = onValue(toastsRef, (snapshot) => {
-      const firebaseToasts = snapshot.val();
-      if (!firebaseToasts) return;
-
-      Object.entries(firebaseToasts).forEach(([firebaseId, toastData]: [string, any]) => {
-        if (!toastData) return;
-        
-        const { message, target, timestamp } = toastData;
-        
-        // Only show toast if it's for this player or for all
-        if (target === "all" || target === currentPlayer) {
-          const localId = `firebase-${firebaseId}`;
-          
-          // Check if we already have this toast to avoid duplicates
-          setToasts(prev => {
-            if (prev.some(toast => toast.id === localId)) {
-              return prev; // Toast already exists, don't add it again
-            }
-            
-            const newToast: ToastMessage = {
-              id: localId,
-              message,
-              target,
-              timestamp
-            };
-            
-            // Set timer for auto-hide (only for new toasts)
-            setToastTimer(localId, 3000);
-            
-            return [...prev, newToast];
-          });
-        }
-      });
-    });
-    */
-
 
     // Cleanup function
     return () => {
@@ -182,8 +140,8 @@ export const ToastProvider = ({ children, gameState }: ToastProviderProps) => {
 
   const value = {
     toasts,
-    showToast,      // Local only
-    pushToast,      // Shared via Firebase
+    showToast,
+    pushToast,
     hideToast,
   };
 

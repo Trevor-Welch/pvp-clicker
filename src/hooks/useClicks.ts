@@ -1,30 +1,28 @@
 // src/hooks/useClicks.ts
-import { useRef } from 'react';
-import { db } from '../firebase';
-import { ref, runTransaction } from 'firebase/database';
+import { useGame } from '../contexts/GameContext';
 
-export const useClicks = (roomId: string, currentPlayer: "p1" | "p2" | null) => {
-  const localClicks = useRef(0);
+export const useClicks = () => {
+  const { setPendingClicks, getActiveEffects } = useGame();
+  
+  const clickCookie = (amount: number = 1) => {
+    // Calculate click multipliers from active effects
+    const clickMultipliers = getActiveEffects('click_multiplier');
+    const totalMultiplier = clickMultipliers.reduce((total, effect) => total * effect.value, 1);
+    
+    const finalAmount = Math.floor(amount * totalMultiplier);
+    
+    console.log(`Click: base=${amount}, multiplier=${totalMultiplier}, final=${finalAmount}`);
+    
+    setPendingClicks(prev => prev + finalAmount);
+  };
 
-  const handleClick = () => {
-    if (!currentPlayer || !roomId) return;
-
-    const playerKey = currentPlayer;
-    localClicks.current += 1;
-
-    // Update Firebase
-    const playerRef = ref(db, `rooms/${roomId}/${playerKey}`);
-    runTransaction(playerRef, (current) => {
-      if (!current) return { clicks: 1, passiveIncome: 0 };
-      return {
-        ...current,
-        clicks: current.clicks + 1,
-      };
-    });
+  const getClickMultiplier = () => {
+    const clickMultipliers = getActiveEffects('click_multiplier');
+    return clickMultipliers.reduce((total, effect) => total * effect.value, 1);
   };
 
   return {
-    handleClick,
-    localClicks: localClicks.current,
+    clickCookie,
+    getClickMultiplier,
   };
 };

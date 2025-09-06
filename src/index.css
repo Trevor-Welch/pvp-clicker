@@ -4,7 +4,6 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
 
   font-synthesis: none;
@@ -117,4 +116,69 @@ main {
   gap: 1rem;
   color: white;
   margin-bottom: 2rem;
+}
+
+
+
+.store-item.active-item {
+  border-left: 3px solid #ffd700;
+}
+
+.store-item.effect-active {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.05));
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.item-type-badge {
+  margin-left: 5px;
+  font-size: 0.8em;
+}
+
+.store-item-stats {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.store-item-effect {
+  color: #4CAF50;
+  font-weight: bold;
+}
+
+.store-item-status {
+  color: #666;
+  font-size: 0.9em;
+}
+
+.active-indicator {
+  color: #ffd700;
+  font-weight: bold;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+
+
+.curse-item {
+  border-left: 3px solid #8b0000;
+  background: linear-gradient(135deg, rgba(139, 0, 0, 0.1), rgba(139, 0, 0, 0.05));
+}
+
+.curse-badge {
+  margin-left: 5px;
+  font-size: 0.8em;
+}
+
+.cursing-indicator {
+  color: #8b0000;
+  font-weight: bold;
+  animation: pulse 2s infinite;
+}
+
+.curse-item.effect-active {
+  box-shadow: 0 0 15px rgba(139, 0, 0, 0.4);
 }
